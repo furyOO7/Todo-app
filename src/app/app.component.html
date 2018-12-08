@@ -1,0 +1,81 @@
+<div class="main-container">
+    <div class="inner-box">
+        <h1>My <br> {{title}} App</h1>
+        <div class="row justify-content-end align-items-center m-0">
+            <div class="auto">
+                <label for="newTodo">Add Todo</label>
+            </div>
+            <div class="col-5">
+                <input type="text" class="form-control" #newTodo>
+            </div>
+            <div class="auto">
+                <button type="button" class="btn btn-primary" (click)="addTodo(newTodo)" newTodo.value="">Add</button>
+            </div>
+        </div>
+        <!--   <table>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Change Status</th>
+                <th>Update</th>
+            </tr>
+            <tr *ngFor="let todo of todos">
+                <td>{{todo.label}}</td>
+                <td>{{todo.done ? "&#10003;" : "&#10006;"}}</td>
+                <td>
+                    <input type="checkbox" (click)="doneTodo(todo)">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="storeTodo(todo)">Update Todo
+                    </button>
+                </td>
+            </tr>
+        </table>-->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <!--<th scope="col">Title</th>-->
+                    <th scope="col">Status</th>
+                    <th>Status</th>
+                    <th scope="col">Change Status</th>
+                    <th scope="col">Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let todo of todos">
+                    <td [ngClass]="{'active': todo.done}"><strong>{{todo.label}}</strong></td>
+                    <td>{{todo.done ? "&#10003;" : "&#10006;"}}</td>
+                    <td>
+                        <input type="checkbox" (click)="doneTodo(todo)">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="storeTodo(todo)">Update Todo
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Todo Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="todoName">New Todo Name</label>
+                <input type="text" [(ngModel)]="updatedTodo">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="updateTodo(updatedTodo)">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
