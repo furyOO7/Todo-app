@@ -34,7 +34,7 @@ export class AppComponent {
   ];
   addTodo(newTodo) {
   console.log(newTodo.value)
-  var newTodo ={
+  var newTodo = {
   "label": newTodo.value,
   "done": false
   }
@@ -46,8 +46,14 @@ export class AppComponent {
   };
  
   storeTodo(todo){
-    this.clickedTodo = todo;
+  if(todo.done == false){
+  $('#exampleModal').modal('show')
+  this.clickedTodo = todo;
    console.log(this.clickedTodo)
+  }
+  else{
+  alert("Todo already completed")
+  }  
   }
   updateTodo(updatedTodo) {
   console.log(this.clickedTodo)
