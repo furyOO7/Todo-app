@@ -43,8 +43,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let todo of todos">
-                    <td [ngClass]="{'active': todo.done}"><strong>{{todo.label}}</strong></td>
-                    <td>{{todo.done ? "&#10003;" : "&#10006;"}}</td>
+                    <td [ngClass]="{'active': todo.status}"><strong>{{todo.todo_name}}</strong></td>
+                    <td>{{todo.status ? "&#10003;" : "&#10006;"}}</td>
                     <td>
                         <input type="checkbox" (click)="doneTodo(todo)">
                     </td>

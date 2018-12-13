@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-root',
@@ -6,60 +9,121 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css',
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+  storeResponse: any;
   title = 'Todo';
   updatedlabel = 'Test'; 
-   clickedTodo = "";
-  todos = [
+   clickedTodo = {
+     "name": ""
+   };
+   /*addnewTodo = {
+   "todo_name": "",
+   "status": false
+   };
+   */
+   constructor(public _http: HttpClient){
+     this.todos = []
+   };
+ /* todos = [
   {
-  "label": "Take Printouts",
+  "name": "Take Printouts",
   "done": false
   },
   {
-  "label": "Boil Milk",
+  "name": "Boil Milk",
   "done": false
   },
   {
-  "label": "Paint Wall",
+  "name": "Paint Wall",
   "done": false
   },
   {
-  "label": "Preapare bed",
+  "name": "Preapare bed",
   "done": false
   },
   {
-  "label": "Watch Young Sheldon",
+  "name": "Watch Young Sheldon",
   "done": false
   }
-  ];
+  ];*/
+  loadTodo() {
+     this._http.get("http://localhost:3000/todo/getdata",{
+      headers: {
+        'Content-type': "application/json"
+      }
+    }).subscribe(response => {
+      //console.log("response", response)
+      if(response.success){
+         this.todos = response.data;
+      }
+      console.log("this.todos", this.todos)
+    })
+  }
+  ngOnInit() {
+      this.loadTodo()
+   
+  }
   addTodo(newTodo) {
-  console.log(newTodo.value)
-  var newTodo = {
+    console.log(newTodo.value)
+    let data =  {
+  "todo_name": newTodo.value,
+  "status": false
+  }
+this._http.post("http://localhost:3000/todo/add", data, {
+  headers: {
+    'Content-type': 'application/json'}}
+    ).subscribe(response => {
+    console.log("response", response);
+    if(response.success){
+      this.loadTodo()
+    }else{
+      console.log("error")
+    }
+  })
+  }
+
+ /* console.log(newTodo.value)
+   this.addnewTodo ={
   "label": newTodo.value,
   "done": false
   }
-  this.todos.push(newTodo)
-  };
+  this.todos.push(this.addnewTodo)
+  };*/
   
   doneTodo(todo){
-  todo.done = !todo.done
-  };
+   console.log(todo)
+    let data =  {
+  "id": todo.id,
+  "status": !todo.status
+  }
+  this._http.post("http://localhost:3000/todo/changeStatus", data, {
+  headers: {
+    'Content-type': 'application/json'}}
+    ).subscribe(response => {
+    if(response.success){
+      console.log(response)
+      todo.status = !todo.status
+    }else{
+      console.log("error")
+    }
+  })
+  }
  
   storeTodo(todo){
-  if(todo.done == false){
-  $('#exampleModal').modal('show')
-  this.clickedTodo = todo;
-   console.log(this.clickedTodo)
-  }
-  else{
-  alert("Todo already completed")
-  }  
+    console.log(todo)
+  /*if(todo.status){
+    this.clickedTodo = todo;
+   console.log(this.clickedTodo);
+   }else{
+    alert("This Todo is already completed");
+   }
   }
   updateTodo(updatedTodo) {
   console.log(this.clickedTodo)
   console.log(updatedTodo)
-  this.clickedTodo.label = updatedTodo;
+  this.clickedTodo.name = updatedTodo;
   $('#exampleModal').modal('hide')
 
-  }
+  }*/
+}
 }
