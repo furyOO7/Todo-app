@@ -11,41 +11,21 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent implements OnInit{
   storeResponse: any;
+  todos: any;
+  data: any;
+  clickedTodo :any;
+  updatedTodo: any;
   title = 'Todo';
   updatedlabel = 'Test'; 
-   clickedTodo = {
-     "name": ""
-   };
-   /*addnewTodo = {
-   "todo_name": "",
-   "status": false
-   };
-   */
+   
    constructor(public _http: HttpClient){
      this.todos = []
+     this.data = {}
+     this.clickedTodo = {}
+     this.updatedTodo = "";
+
    };
- /* todos = [
-  {
-  "name": "Take Printouts",
-  "done": false
-  },
-  {
-  "name": "Boil Milk",
-  "done": false
-  },
-  {
-  "name": "Paint Wall",
-  "done": false
-  },
-  {
-  "name": "Preapare bed",
-  "done": false
-  },
-  {
-  "name": "Watch Young Sheldon",
-  "done": false
-  }
-  ];*/
+
   loadTodo() {
      this._http.get("http://localhost:3000/todo/getdata",{
       headers: {
@@ -82,14 +62,6 @@ this._http.post("http://localhost:3000/todo/add", data, {
   })
   }
 
- /* console.log(newTodo.value)
-   this.addnewTodo ={
-  "label": newTodo.value,
-  "done": false
-  }
-  this.todos.push(this.addnewTodo)
-  };*/
-  
   doneTodo(todo){
    console.log(todo)
     let data =  {
@@ -111,19 +83,40 @@ this._http.post("http://localhost:3000/todo/add", data, {
  
   storeTodo(todo){
     console.log(todo)
-  /*if(todo.status){
-    this.clickedTodo = todo;
-   console.log(this.clickedTodo);
-   }else{
-    alert("This Todo is already completed");
-   }
+    if(todo.status != true){
+      $('#exampleModal').modal('show');
+      this.clickedTodo = todo;
+    }
+    else{
+      alert("This todo is already completed")
+    }
   }
-  updateTodo(updatedTodo) {
-  console.log(this.clickedTodo)
-  console.log(updatedTodo)
-  this.clickedTodo.name = updatedTodo;
-  $('#exampleModal').modal('hide')
 
-  }*/
-}
+  updateTodo(updatedTodo) {
+    let data = {
+      "newTodo": updatedTodo,
+      "id": this.clickedTodo.id
+    }
+    if(updatedTodo != undefined){
+      console.log(this.clickedTodo)
+  console.log(updatedTodo)
+  this._http.post("http://localhost:3000/todo/updateTodo", data, {headers:{
+    'Content-type': "application/json"
+  }
+}).subscribe(response => {
+  if(response.success){
+    this.loadTodo();
+     $('#exampleModal').modal('hide');
+     this.updatedTodo = "";
+  }
+})
+
+  }
+ /* this.clickedTodo.name = updatedTodo;*/
+
+    else{
+      alert("Kindly enter something")
+    }
+  
+  }
 }
