@@ -44,13 +44,17 @@
             <tbody>
                 <tr *ngFor="let todo of todos">
                     <td [ngClass]="{'active': todo.status}"><strong>{{todo.todo_name}}</strong></td>
-                    <td>{{todo.status ? "&#10003;" : "&#10006;"}}</td>
+                    <td [ngClass]="{'actievTick': todo.status}">{{todo.status ? "&#10003;" : "&#10006;"}}</td>
                     <td>
-                        <input type="checkbox" (click)="doneTodo(todo)">
+                        <input type="checkbox" (click)="doneTodo(todo)" [checked]="todo.status">
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="storeTodo(todo)">Update Todo
-                        </button>
+                        <div class="delete-edit-option">
+                                            <button type="button" class="btn btn-info default-small-action-btn" (click)="storeTodo(todo)"><i fa [name]="'edit'"></i></button>
+                                            <button type="button" class="btn btn-danger default-small-action-btn"><i fa [name]="'trash'"></i></button>
+                                        </div>
+                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" (click)="storeTodo(todo)">Update Todo
+                        </button> -->
                     </td>
                 </tr>
             </tbody>
