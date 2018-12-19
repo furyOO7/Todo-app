@@ -17,6 +17,7 @@ export class AppComponent implements OnInit{
   data: any;
   clickedTodo :any;
   updatedTodo: any;
+  todoDelete: any;
   title = 'Todo';
   updatedlabel = 'Test'; 
  
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit{
      this.todos = []
      this.data = {}
      this.clickedTodo = {}
+     this.todoDelete = {}
      this.updatedTodo = "";
    };
 
@@ -137,7 +139,8 @@ this._http.post("http://localhost:3000/todo/add", data, {
         'Content-type': 'application/json'
       }
     }).subscribe(response => {
-      if(response.success){
+       let res = JSON.parse(JSON.stringify(response))
+            if(res.success){
         console.log("response", response)
          $("#deleteModal").modal('hide');
         this.loadTodo();
